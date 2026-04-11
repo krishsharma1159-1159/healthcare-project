@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuraHealth - Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dashboard-page">
+  <div class="background-blur bg-1"></div>
+  <div class="background-blur bg-2"></div>
+
+  <header class="navbar glass-card">
+    <div class="navbar-left">
+      <div class="brand-icon small">
+        <i class="fa-solid fa-microscope"></i>
+      </div>
+      <div>
+        <h1>AuraHealth System</h1>
+        <p>ML + TigerGraph Intelligence Dashboard</p>
+      </div>
+    </div>
+    <div class="navbar-right">
+      <div class="user-pill">
+        <i class="fa-regular fa-user"></i>
+        <span id="userEmailDisplay">demo@user.com</span>
+      </div>
+      <button id="logoutBtn" class="btn-ghost">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        Logout
+      </button>
+    </div>
+  </header>
+  
+  <section class="metrics-bar-wrapper">
+    <div class="metrics-bar glass-card">
+      <div class="metric-item">
+        <div class="metric-label">Model Accuracy</div>
+        <div class="metric-value" id="accuracyValue">--%</div>
+        <div class="metric-indicator accuracy-accent"></div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric-item">
+        <div class="metric-label">Weighted Precision</div>
+        <div class="metric-value" id="precisionValue">--%</div>
+        <div class="metric-indicator precision-accent"></div>
+      </div>
+      <div class="metric-divider"></div>
+      <div class="metric-item">
+        <div class="metric-label">Model Architecture</div>
+        <div class="metric-value">XGBoost</div>
+        <div class="metric-indicator model-accent"></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="dashboard-grid">
+    <section class="glass-card card input-card">
+      <div class="card-header">
+        <h2>Patient Feature Input</h2>
+        <p>Set symptom intensity and trigger prediction.</p>
+      </div>
+
+      <div class="feature-list">
+        <label class="feature-item">
+          <span>Fever</span>
+          <input type="range" id="fever" min="0" max="1" step="1" value="0">
+          <output id="feverVal">0</output>
+        </label>
+
+        <label class="feature-item">
+          <span>Cough</span>
+          <input type="range" id="cough" min="0" max="1" step="1" value="0">
+          <output id="coughVal">0</output>
+        </label>
+
+        <label class="feature-item">
+          <span>Headache</span>
+          <input type="range" id="headache" min="0" max="1" step="1" value="0">
+          <output id="headacheVal">0</output>
+        </label>
+
+        <label class="feature-item">
+          <span>Fatigue</span>
+          <input type="range" id="fatigue" min="0" max="1" step="1" value="0">
+          <output id="fatigueVal">0</output>
+        </label>
+      </div>
+
+      <button id="predictBtn" class="btn-primary btn-predict">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        Predict with TigerGraph
+      </button>
+      <div id="statusMessage" class="status-text">Ready to run prediction</div>
+    </section>
+
+    <section class="glass-card card result-card">
+      <div class="card-header">
+        <h2>Prediction Result</h2>
+        <p>Top predicted class and confidence details.</p>
+      </div>
+
+      <div class="result-panel" id="resultPanel">
+        <div class="result-empty">No prediction yet. Click "Predict with TigerGraph".</div>
+      </div>
+    </section>
+
+    <section class="glass-card card chart-card">
+      <div class="card-header">
+        <h2>Prediction Distribution</h2>
+        <p>Bar chart grouped by predicted class.</p>
+      </div>
+      <div class="chart-wrap">
+        <canvas id="predictionChart"></canvas>
+      </div>
+    </section>
+
+    <section class="glass-card card graph-card">
+      <div class="card-header">
+        <h2>Graph View</h2>
+        <p>Nodes are colored by predicted disease class.</p>
+      </div>
+      <div id="networkGraph"></div>
+    </section>
+  </main>
+
+  <div id="loadingOverlay" class="loading-overlay hidden">
+    <div class="spinner"></div>
+    <p>Running model prediction...</p>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

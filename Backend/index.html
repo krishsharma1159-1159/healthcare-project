@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head><title>Disease Predictor</title></head>
+<body>
+
+<h2>Disease Prediction</h2>
+
+<label>Fever</label><input type="checkbox" id="fever"><br>
+<label>Cough</label><input type="checkbox" id="cough"><br>
+<label>Headache</label><input type="checkbox" id="headache"><br>
+<label>Fatigue</label><input type="checkbox" id="fatigue"><br>
+
+<button onclick="predict()">Predict</button>
+
+<h3 id="result"></h3>
+
+<script>
+function predict() {
+  let symptoms = [
+    document.getElementById("fever").checked ? 1 : 0,
+    document.getElementById("cough").checked ? 1 : 0,
+    document.getElementById("headache").checked ? 1 : 0,
+    document.getElementById("fatigue").checked ? 1 : 0
+  ];
+
+  fetch("http://127.0.0.1:5000/predict", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({symptoms: symptoms})
+  })
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("result").innerHTML =
+      "Disease: " + data.disease + "<br>Drugs: " + JSON.stringify(data.drugs);
+  });
+}
+</script>
+
+</body>
+</html>

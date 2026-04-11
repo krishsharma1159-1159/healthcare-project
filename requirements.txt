@@ -1,0 +1,10 @@
+Flask
+Flask-Cors
+pandas
+numpy
+scikit-learn
+joblib
+pyTigerGraph
+typing_extensions
+# requests
+# tensorflow

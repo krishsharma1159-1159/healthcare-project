@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AuraHealth - Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="login-page">
+  <div class="background-blur bg-1"></div>
+  <div class="background-blur bg-2"></div>
+
+  <main class="login-wrapper">
+    <section class="glass-card login-card">
+      <div class="brand-block">
+        <div class="brand-icon">
+          <i class="fa-solid fa-brain"></i>
+        </div>
+        <h1>AuraHealth</h1>
+        <p>Secure access to the TigerGraph intelligence dashboard</p>
+      </div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <div class="input-wrap">
+            <i class="fa-regular fa-envelope"></i>
+            <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+          </div>
+          <small class="error-text" id="emailError"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password">
+          </div>
+          <small class="error-text" id="passwordError"></small>
+        </div>
+
+        <div class="form-options">
+          <label class="checkbox-wrap">
+            <input type="checkbox" id="rememberMe">
+            <span>Remember me</span>
+          </label>
+          <a href="#" class="text-link">Forgot password?</a>
+        </div>
+
+        <button type="submit" id="loginBtn" class="btn-primary btn-login">
+          <span>Login</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </form>
+
+      <div style="margin: 14px 0; border-top: 1px solid rgba(153, 175, 255, 0.24);"></div>
+
+      <h3 style="margin: 0 0 10px; font-size: 1rem; color: #cfe0ff;">Create a new account</h3>
+      <form id="signupForm" novalidate>
+        <div class="form-group">
+          <label for="signupEmail">Signup Email</label>
+          <div class="input-wrap">
+            <i class="fa-regular fa-envelope"></i>
+            <input type="email" id="signupEmail" placeholder="newuser@example.com" autocomplete="email">
+          </div>
+          <small class="error-text" id="signupEmailError"></small>
+        </div>
+
+        <div class="form-group">
+          <label for="signupPassword">Signup Password</label>
+          <div class="input-wrap">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="signupPassword" placeholder="Create password" autocomplete="new-password">
+          </div>
+          <small class="error-text" id="signupPasswordError"></small>
+        </div>
+
+        <button type="submit" id="signupBtn" class="btn-primary btn-login">
+          <span>Sign Up</span>
+          <i class="fa-solid fa-user-plus"></i>
+        </button>
+      </form>
+
+      <div id="authMessage" style="margin-top: 12px; font-size: 0.9rem; min-height: 20px;"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
