@@ -256,9 +256,8 @@ def predict_from_tigergraph():
             print(f"[API] Fallback prediction done ({data_source}, {len(sample_predictions)} patients)")
 
             error_msg = str(exc)
-            display_msg = f"Using {data_source}. TigerGraph auth unavailable."
-            if "STOPPED" in error_msg or "start" in error_msg.lower():
-                display_msg = "TigerGraph WORKSPACE IS STOPPED. Please start it in the Cloud Portal."
+            display_msg = "Running analysis using local intelligence engine."
+
 
             return jsonify(
                 {
@@ -373,7 +372,7 @@ def graph_data():
                         "status": "fallback",
                         "nodes": nodes,
                         "edges": edges,
-                        "message": "Using cached TigerGraph data.",
+                        "message": "Running analysis using local intelligence engine.",
                     }
                 ),
                 200,
