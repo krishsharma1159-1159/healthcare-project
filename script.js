@@ -326,14 +326,27 @@ function renderPredictionChart(samples) {
     return;
   }
 
-  const grouped = {};
-  for (const item of samples) {
-    const label = String(item.prediction || "Unknown");
-    grouped[label] = (grouped[label] || 0) + 1;
+  let labels = [];
+  let values = [];
+  let datasetLabel = "Prediction Count";
+
+  if (samples.length > 0 && samples[0].id === "Current Patient" && samples[0].probabilities && Object.keys(samples[0].probabilities).length > 0) {
+    // Show probability distribution for the current patient
+    const probs = samples[0].probabilities;
+    labels = Object.keys(probs);
+    values = labels.map(l => (probs[l] * 100).toFixed(1));
+    datasetLabel = "Confidence Level (%)";
+  } else {
+    // Fallback: Group by label count for batch
+    const grouped = {};
+    for (const item of samples) {
+      const label = String(item.prediction || "Unknown");
+      grouped[label] = (grouped[label] || 0) + 1;
+    }
+    labels = Object.keys(grouped);
+    values = Object.values(grouped);
   }
 
-  const labels = Object.keys(grouped);
-  const values = Object.values(grouped);
   const colors = labels.map(colorFromLabel);
 
   if (predictionChart) {
@@ -346,7 +359,7 @@ function renderPredictionChart(samples) {
       labels,
       datasets: [
         {
-          label: "Prediction Count",
+          label: datasetLabel,
           data: values,
           backgroundColor: colors,
           borderRadius: 10,

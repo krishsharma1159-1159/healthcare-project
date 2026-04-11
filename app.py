@@ -156,10 +156,22 @@ def predict_from_tigergraph():
                 final_label = "Healthy"
                 user_score = 0.99
 
+            user_probs = {}
+            if hasattr(model, "predict_proba"):
+                p_array = model.predict_proba(custom_X)[0]
+                # If label encoder was used, we need to map class indices to names
+                if le is not None:
+                    # model.classes_ often contains the encoded labels [0, 1, 2...]
+                    class_labels = le.inverse_transform(model.classes_)
+                    user_probs = {str(lbl): float(p) for lbl, p in zip(class_labels, p_array)}
+                else:
+                    user_probs = {str(lbl): float(p) for lbl, p in zip(model.classes_, p_array)}
+
             user_sample = {
                 "id": "Current Patient",
                 "prediction": final_label,
-                "score": user_score
+                "score": user_score,
+                "probabilities": user_probs
             }
             print(f"[API] Custom user prediction: {user_sample}")
         except Exception as e:
