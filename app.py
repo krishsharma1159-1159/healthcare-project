@@ -30,9 +30,9 @@ def add_cors_headers(response):
     Add permissive CORS headers for local beginner setup.
     If you serve frontend from Flask (recommended), CORS will not be needed.
     """
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"
-    response.headers["Access-Control-Allow-Methods"] = "GET,POST,OPTIONS"
+    # response.headers["Access-Control-Allow-Origin"] = "*"
+    # response.headers["Access-Control-Allow-Headers"] = "Content-Type,Authorization"
+    # response.headers["Access-Control-Allow-Methods"] = "GET,POST,OPTIONS"
     return response
 
 
@@ -146,26 +146,25 @@ def predict_from_tigergraph():
             custom_X = np.array([custom_x], dtype=np.float32)
             
             model, le, _ = load_or_create_model(CFG.model_path, CFG.feature_columns)
-            custom_labels, custom_scores = run_predictions(model, custom_X, le=le)
             
-            final_label = str(custom_labels[0])
-            user_score = custom_scores[0]
-            # Heuristics removed: relying on model prediction
             # Default logic for asymptomatic cases
             if fever == 0 and cough == 0 and headache == 0 and fatigue == 0 and chest_pain == 0:
                 final_label = "Healthy"
-                user_score = 0.99
-
-            user_probs = {}
-            if hasattr(model, "predict_proba"):
-                p_array = model.predict_proba(custom_X)[0]
-                # If label encoder was used, we need to map class indices to names
-                if le is not None:
-                    # model.classes_ often contains the encoded labels [0, 1, 2...]
-                    class_labels = le.inverse_transform(model.classes_)
-                    user_probs = {str(lbl): float(p) for lbl, p in zip(class_labels, p_array)}
-                else:
-                    user_probs = {str(lbl): float(p) for lbl, p in zip(model.classes_, p_array)}
+                user_score = 1.0
+                user_probs = {"Healthy": 1.0, "Flu": 0.0, "COVID-19": 0.0, "Migraine": 0.0, "Cold": 0.0}
+            else:
+                custom_labels, custom_scores = run_predictions(model, custom_X, le=le)
+                final_label = str(custom_labels[0])
+                user_score = float(custom_scores[0])
+                
+                user_probs = {}
+                if hasattr(model, "predict_proba"):
+                    p_array = model.predict_proba(custom_X)[0]
+                    if le is not None:
+                        class_labels = le.inverse_transform(model.classes_)
+                        user_probs = {str(lbl): float(p) for lbl, p in zip(class_labels, p_array)}
+                    else:
+                        user_probs = {str(lbl): float(p) for lbl, p in zip(model.classes_, p_array)}
 
             user_sample = {
                 "id": "Current Patient",
